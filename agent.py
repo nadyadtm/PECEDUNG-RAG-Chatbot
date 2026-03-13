@@ -10,9 +10,9 @@ load_dotenv('conf/.env')
 
 model = ChatGoogleGenerativeAI(
     api_key = environ['GEMINI_API_KEY'],
-    model="gemini-2.5-flash-lite",
+    model="gemini-2.5-flash",
     temperature=1.0,  # Gemini 3.0+ defaults to 1.0
-    max_tokens=None,
+    max_tokens=3000,
     timeout=10,
     # other params...
 )
@@ -49,7 +49,7 @@ vector_store_rumah_sakit = Chroma(
 
 @tool(response_format="content_and_artifact")
 def retrieve_context_transportasi(query: str):
-    """Retrieve information to help answer a query."""
+    """Mengambil informasi yang berhubungan dengan transportasi kota bandung"""
     retrieved_docs = vector_store.similarity_search(query, k=2)
     serialized = "\n\n".join(
         (f"Source: {doc.metadata}\nContent: {doc.page_content}")
@@ -59,7 +59,7 @@ def retrieve_context_transportasi(query: str):
 
 @tool(response_format="content_and_artifact")
 def retrieve_context_rumah_makan(query: str):
-    """Retrieve information to help answer a query."""
+    """Mengambil informasi yang berhubungan tentang rumah makan/restoran di kota bandung"""
     retrieved_docs = vector_store_restaurant.similarity_search(query, k=2)
     serialized = "\n\n".join(
         (f"Source: {doc.metadata}\nContent: {doc.page_content}")
@@ -69,7 +69,7 @@ def retrieve_context_rumah_makan(query: str):
 
 @tool(response_format="content_and_artifact")
 def retrieve_context_rumah_sakit(query: str):
-    """Retrieve information to help answer a query."""
+    """Mengambil informasi yang berhubungan tentang rumah sakit di kota bandung"""
     retrieved_docs = vector_store_rumah_sakit.similarity_search(query, k=2)
     serialized = "\n\n".join(
         (f"Source: {doc.metadata}\nContent: {doc.page_content}")
@@ -83,6 +83,10 @@ def init_agent():
     1. `retrieve_context_rumah_makan` -> Pertanyaan terkait rumah makan
     2. `retrieve_context_transportasi` -> Pertanyaan terkait transportasi 
     3. `retrieve_context_rumah_sakit` -> Pertanyaan terkait rumah sakit 
+
+    Selalu ingat aturan berikut
+    1. SELALU menjawab pertanyaan berdasarkan tools
+    2. JANGAN mengeluarkan pertanyaan di luar tools
     """
     agent = create_agent(
         model=model,

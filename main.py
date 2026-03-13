@@ -28,9 +28,14 @@ if prompt := st.chat_input("Ketik Di Sini"):
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
-        st.markdown(response['messages'][-1].content)
+        if type(response['messages'][-1].content)==list:
+            st.markdown(response['messages'][-1].content[0]['text'])
+            txt = response['messages'][-1].content[0]['text']
+        else:
+            st.markdown(response['messages'][-1].content)
+            txt = response['messages'][-1].content
 
-    st.session_state.messages.append({"role": "assistant", "content": response['messages'][-1].content})
+    st.session_state.messages.append({"role": "assistant", "content": txt})
 
 
     
