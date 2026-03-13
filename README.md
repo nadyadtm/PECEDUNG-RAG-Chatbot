@@ -13,8 +13,11 @@ python storing_docs.py
 ```
 streamlit run main.py
 ```
+Anda akan mendapati tampilan berikut ini
 
-## Sumber Dokumen RAG
+![alt text](img/tampilan_ui.png)
+
+## Referensi Dokumen RAG
 1. https://www.kompas.com/food/read/2023/09/02/131700875/35-tempat-makan-enak-di-bandung-dari-legendaris-hingga-kekinian?page=all
 2. https://transportforbandung.org/peta/bus-kota
 3. https://www.rumah123.com/explore/kota-bandung/rumah-sakit-di-bandung/
